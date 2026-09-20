@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>TapoHubSync</Name>
+  <!-- Stock Python image from Docker Hub; no custom build/publish needed. -->
+  <Repository>python:3.12-slim</Repository>
+  <Registry>https://hub.docker.com/_/python</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support/>
+  <Project/>
+  <Overview>Mirrors recordings from cameras/doorbells paired to a Tapo hub to local storage. Copy the repo scripts to the host and map them to /app. entrypoint.sh installs ffmpeg + deps on first start, then runs sync_loop.py. First run: open the container console and run `python3 /app/hub_sync.py --setup` to create the encrypted config in /config, then it syncs automatically on a loop.</Overview>
+  <Category>MediaApp:Video Tools:</Category>
+  <WebUI/>
+  <TemplateURL/>
+  <Icon/>
+  <ExtraParams/>
+  <!-- Runs the startup script from the mounted /app volume. -->
+  <PostArgs>bash /app/entrypoint.sh</PostArgs>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Requires/>
+  <Config Name="App dir (scripts)" Target="/app" Default="/mnt/user/appdata/tapohubsync/app" Mode="rw" Description="Host folder containing the repo scripts (hub_sync.py, sync_loop.py, requirements.txt, entrypoint.sh)." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/tapohubsync/app</Config>
+  <Config Name="Config dir" Target="/config" Default="/mnt/user/appdata/tapohubsync/config" Mode="rw" Description="Holds the encrypted tapohubsync.local.json and .key created by --setup. Persists across reboots." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/tapohubsync/config</Config>
+  <Config Name="Recordings dir" Target="/recordings" Default="/mnt/user/media/tapo" Mode="rw" Description="Where downloaded recordings (MKV) are written." Type="Path" Display="always" Required="true" Mask="false">/mnt/user/media/tapo</Config>
+  <Config Name="Sync interval (seconds)" Target="TAPO_SYNC_INTERVAL" Default="3600" Mode="" Description="Seconds between sync passes. 0 = sync once and exit." Type="Variable" Display="always" Required="true" Mask="false">3600</Config>
+  <Config Name="Config file path" Target="TAPO_CONFIG" Default="/config/tapohubsync.local.json" Mode="" Description="Path to the encrypted config inside the container. Leave as default." Type="Variable" Display="advanced" Required="false" Mask="false">/config/tapohubsync.local.json</Config>
+  <Config Name="Key file path" Target="TAPO_KEY_FILE" Default="/config/tapohubsync.local.key" Mode="" Description="Path to the decryption key inside the container. Leave as default." Type="Variable" Display="advanced" Required="false" Mask="false">/config/tapohubsync.local.key</Config>
+</Container>
