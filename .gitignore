@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local Tapo credentials and keys
+tapohubsync.local.json
+tapohubsync.local.key
+tapo*.json
+tapo*.key
+
+# Runtime files
+*.log
+
+# Downloaded recordings and temporary media
+recordings/
+*.mkv
+
+# OS/editor noise
+.DS_Store

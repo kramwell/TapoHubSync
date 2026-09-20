@@ -1,0 +1,11 @@
+# Never bake secrets or downloaded media into the image.
+tapohubsync.local.json
+tapohubsync.local.key
+recordings/
+*.mkv
+*.log
+__pycache__/
+*.pyc
+.git/
+.gitignore
+README.md
