@@ -1,0 +1,22 @@
+services:
+  tapohubsync:
+    # Stock Python image straight from Docker Hub; no custom build.
+    image: python:3.12-slim
+    container_name: tapohubsync
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      # Seconds between sync passes; 0 = sync once and exit.
+      TAPO_SYNC_INTERVAL: "3600"
+      TAPO_CONFIG: /config/tapohubsync.local.json
+      TAPO_KEY_FILE: /config/tapohubsync.local.key
+      TAPO_OUTPUT_DIR: /recordings
+    volumes:
+      # Scripts live at the repo root (one level up from this compose file).
+      - ../:/app
+      # Encrypted config (created by --setup); persists across reboots/rebuilds.
+      - ../config:/config
+      # Where recordings are saved on the host.
+      - ../recordings:/recordings
+    # Installs ffmpeg + deps once, then runs sync_loop.py.
+    command: ["bash", "/app/entrypoint.sh"]
